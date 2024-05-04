@@ -1,6 +1,7 @@
 package com.driver.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,12 @@ public class Admin {
 
     @OneToMany(mappedBy = "admin",cascade = CascadeType.ALL)
     List<ServiceProvider> serviceProviders;
+
+
+//    public Admin(String username, String password) {
+//        this.username = username;
+//        this.password = password;
+//    }
 
     public int getId() {
         return id;
