@@ -60,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ServiceProvider addCountry(int serviceProviderId, String countryName) throws Exception{
         Optional<ServiceProvider> optionalServiceProvider = serviceProviderRepository1.findById(serviceProviderId);
-//        if(optionalServiceProvider== null) throw new Exception("ServiceProvider ID is invalid!");
+        if(optionalServiceProvider== null) throw new Exception("ServiceProvider ID is invalid!");
         ServiceProvider serviceProvider = optionalServiceProvider.get();
 
         // now need to get the country
@@ -92,8 +92,8 @@ public class AdminServiceImpl implements AdminService {
         country.setServiceProvider(serviceProvider);
 
         // connect with country
-        Country country1 = countryRepository1.save(country);
-        serviceProvider.getCountryList().add(country1);
+//        Country country1 = countryRepository1.save(country);
+        serviceProvider.getCountryList().add(country);
         serviceProviderRepository1.save(serviceProvider);
         return  serviceProvider;
     }
