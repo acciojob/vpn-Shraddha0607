@@ -1,7 +1,10 @@
 package com.driver.services.impl;
 
+import com.driver.model.Connection;
 import com.driver.model.CountryName;
+import com.driver.model.ServiceProvider;
 import com.driver.model.User;
+import com.driver.repository.ConnectionRepository;
 import com.driver.repository.CountryRepository;
 import com.driver.repository.ServiceProviderRepository;
 import com.driver.repository.UserRepository;
@@ -20,6 +23,9 @@ public class UserServiceImpl implements UserService {
     ServiceProviderRepository serviceProviderRepository3;
     @Autowired
     CountryRepository countryRepository3;
+
+    @Autowired
+    ConnectionRepository connectionRepository3;
 
     @Override
     public User register(String username, String password, String countryName) throws Exception{
@@ -64,7 +70,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User subscribe(Integer userId, Integer serviceProviderId) {
-        User user = new User();
+        User user = userRepository3.findById(userId).get();
+        ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
+        // create new connection
+        Connection connection = new Connection();
+        connection.setUser(user);
+        connection.setServiceProvider(serviceProvider);
+        connectionRepository3.save(connection);
+
+        // make connection
+        user.getServiceProviderList().add(serviceProvider);
+        serviceProvider.getUsers().add(user);
+        userRepository3.save(user);
+        serviceProviderRepository3.save(serviceProvider);
         return  user;
     }
 }
