@@ -82,7 +82,7 @@ public class AdminServiceImpl implements AdminService {
             countryName1 = CountryName.JPN;
             countryCode = CountryName.JPN.toCode();
         }else{
-            throw new Exception("Country not found. ");
+            throw new Exception("Country not found");
         }
 
         // now make the country object

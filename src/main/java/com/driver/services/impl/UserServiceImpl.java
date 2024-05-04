@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             countryName1 = CountryName.JPN;
             countryCode = CountryName.JPN.toCode();
         }else{
-            throw new Exception("Country not found. ");
+            throw new Exception("Country not found");
         }
 
         // now we need to give the details to the user
