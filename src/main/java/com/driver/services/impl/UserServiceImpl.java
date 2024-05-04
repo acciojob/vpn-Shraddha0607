@@ -9,6 +9,8 @@ import com.driver.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -44,15 +46,12 @@ public class UserServiceImpl implements UserService {
         }else{
             throw new Exception("Country not found. ");
         }
-//        String username;
-//        private String password;
-//        private String originalIp;
-//        private Boolean connected;
-//        private String maskedIp;
 
         // now we need to give the details to the user
         user.setUsername(username);
         user.setPassword(password);
+        user.setConnectionList(new ArrayList<>());
+        user.setServiceProviderList(new ArrayList<>());
         User user1 = userRepository3.save(user);
         // now make originalIp = countryCode+"."+userId
         String originalIp = countryCode + "." + String.valueOf(user1.getId());
