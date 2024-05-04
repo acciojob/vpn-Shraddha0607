@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = new Admin();
         admin.setPassword(password);
         admin.setUsername(username);
-        admin.setServiceProviders(new ArrayList<>());
+//        admin.setServiceProviders(new ArrayList<>());
 
        adminRepository1.save(admin);
         return admin;
@@ -39,9 +39,9 @@ public class AdminServiceImpl implements AdminService {
     public Admin addServiceProvider(int adminId, String providerName) {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setName(providerName);
-        serviceProvider.setConnectionList(new ArrayList<>());
-        serviceProvider.setUsers(new ArrayList<>());
-        serviceProvider.setCountryList(new ArrayList<>());
+//        serviceProvider.setConnectionList(new ArrayList<>());
+//        serviceProvider.setUsers(new ArrayList<>());
+//        serviceProvider.setCountryList(new ArrayList<>());
         ServiceProvider serviceProvider1 =serviceProviderRepository1.save(serviceProvider);
 
         // now do connectivity
