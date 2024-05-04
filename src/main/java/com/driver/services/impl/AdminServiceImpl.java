@@ -43,15 +43,15 @@ public class AdminServiceImpl implements AdminService {
         serviceProvider.setConnectionList(new ArrayList<>());
         serviceProvider.setUsers(new ArrayList<>());
         serviceProvider.setCountryList(new ArrayList<>());
-        ServiceProvider serviceProvider1 = serviceProviderRepository1.save(serviceProvider);
+        serviceProviderRepository1.save(serviceProvider);
 
         // now do connectivity
         Optional<Admin> adminOptional = adminRepository1.findById(adminId);
         Admin admin = adminOptional.get();
-        admin.getServiceProviders().add(serviceProvider1);
-        serviceProvider1.setAdmin(admin);
+        admin.getServiceProviders().add(serviceProvider);
+        serviceProvider.setAdmin(admin);
         adminRepository1.save(admin);
-        serviceProviderRepository1.save(serviceProvider1);
+        serviceProviderRepository1.save(serviceProvider);
 
         return admin;
 
@@ -92,9 +92,9 @@ public class AdminServiceImpl implements AdminService {
         country.setServiceProvider(serviceProvider);
 
         // connect with country
-//        Country country1 = countryRepository1.save(country);
+        countryRepository1.save(country);
         serviceProvider.getCountryList().add(country);
-        serviceProviderRepository1.save(serviceProvider);
+//        serviceProviderRepository1.save(serviceProvider);
         return  serviceProvider;
     }
 }
