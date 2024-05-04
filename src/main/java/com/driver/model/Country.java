@@ -6,36 +6,55 @@ import javax.persistence.*;
 
 @Entity
 public class Country {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int countryId;
 
     private CountryName countryName;
     private String code;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private User user;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn
     private ServiceProvider serviceProvider;
 
-    public int getId() {
-        return id;
+
+    public Country() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Country(CountryName countryName, String code) {
+        this.countryName = countryName;
+        this.code = code;
     }
-    public CountryName getCountryName(){
+
+    public Country(int countryId,
+                   ServiceProvider serviceProvider,
+                   User user,
+                   String code,
+                   CountryName countryName) {
+        this.countryId = countryId;
+        this.serviceProvider = serviceProvider;
+        this.user = user;
+        this.code = code;
+        this.countryName = countryName;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
+
+    public CountryName getCountryName() {
         return countryName;
     }
-    public void setCountryName(CountryName countryName){this.countryName = countryName;}
-    public String getCode() {
-        return code;
+
+    public void setCountryName(CountryName countryName) {
+        this.countryName = countryName;
     }
-    public void setCode(String code){this.code = code;}
 
     public User getUser() {
         return user;
@@ -51,5 +70,13 @@ public class Country {
 
     public void setServiceProvider(ServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

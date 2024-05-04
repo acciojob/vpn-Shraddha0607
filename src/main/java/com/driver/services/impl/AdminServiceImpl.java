@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,73 +29,49 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin register(String username, String password) {
         Admin admin = new Admin();
-        admin.setPassword(password);
-        admin.setUsername(username);
-        admin.setServiceProviders(new ArrayList<>());
 
-       adminRepository1.save(admin);
+        admin.setUsername(username);
+        admin.setPassword(password);
+
+        adminRepository1.save(admin);
         return admin;
     }
 
     @Override
     public Admin addServiceProvider(int adminId, String providerName) {
+
+        Admin admin = adminRepository1.findById(adminId).get();
+
+
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setName(providerName);
-        serviceProvider.setConnectionList(new ArrayList<>());
-        serviceProvider.setUsers(new ArrayList<>());
-        serviceProvider.setCountryList(new ArrayList<>());
-        serviceProviderRepository1.save(serviceProvider);
-
-        // now do connectivity
-        Optional<Admin> adminOptional = adminRepository1.findById(adminId);
-        Admin admin = adminOptional.get();
-        admin.getServiceProviders().add(serviceProvider);
         serviceProvider.setAdmin(admin);
+        List<ServiceProvider> serviceProviderList = admin.getServiceProviders();
+        serviceProviderList.add(serviceProvider);
+        admin.setServiceProviders(serviceProviderList);
+
         adminRepository1.save(admin);
-        serviceProviderRepository1.save(serviceProvider);
-
         return admin;
-
     }
 
     @Override
     public ServiceProvider addCountry(int serviceProviderId, String countryName) throws Exception{
-        Optional<ServiceProvider> optionalServiceProvider = serviceProviderRepository1.findById(serviceProviderId);
-        if(optionalServiceProvider== null) throw new Exception("ServiceProvider ID is invalid!");
-        ServiceProvider serviceProvider = optionalServiceProvider.get();
+        boolean isCountryPresent = false;
 
-        // now need to get the country
-        CountryName countryName1=null;
-        String countryCode=null;
-        if(countryName.equalsIgnoreCase("ind")){
-            countryName1=CountryName.IND;
-            countryCode=CountryName.IND.toCode();
-        }else if(countryName.equalsIgnoreCase("aus")){
-            countryName1=CountryName.AUS;
-            countryCode=CountryName.AUS.toCode();
-        }else if(countryName.equalsIgnoreCase("usa")) {
-            countryName1 = CountryName.USA;
-            countryCode = CountryName.USA.toCode();
-        }else if(countryName.equalsIgnoreCase("chi")){
-            countryName1 = CountryName.CHI;
-            countryCode = CountryName.CHI.toCode();
-        }else if(countryName.equalsIgnoreCase("jpn")){
-            countryName1 = CountryName.JPN;
-            countryCode = CountryName.JPN.toCode();
-        }else{
-            throw new Exception("Country not found");
+        String str = countryName.toUpperCase();
+        if(!str.equals("IND") && !str.equals("JPN") && !str.equals("AUS") && !str.equals("CHI") && !str.equals("USA")){
+            throw  new Exception("Country not found");
         }
+        ServiceProvider serviceProvider = serviceProviderRepository1.findById(serviceProviderId).get();
 
-        // now make the country object
-        Country country = new Country();
-        country.setCountryName(countryName1);
-        country.setCode(countryCode);
+        Country country = new Country(CountryName.valueOf(str), CountryName.valueOf(str).toCode());
+
+
         country.setServiceProvider(serviceProvider);
-
-        // connect with country
-        countryRepository1.save(country);
         serviceProvider.getCountryList().add(country);
-//        serviceProviderRepository1.save(serviceProvider);
-        return  serviceProvider;
+
+        serviceProviderRepository1.save(serviceProvider);
+
+        return serviceProvider;
     }
 }
