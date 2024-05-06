@@ -44,13 +44,14 @@ public class AdminServiceImpl implements AdminService {
             serviceProvider.setConnectionList(new ArrayList<>());
             serviceProvider.setUsers(new ArrayList<>());
             serviceProvider.setCountryList(new ArrayList<>());
-            serviceProviderRepository1.save(serviceProvider);
+
 
             // now do connectivity
             Optional<Admin> adminOptional = adminRepository1.findById(adminId);
             Admin admin = adminOptional.get();
             admin.getServiceProviders().add(serviceProvider);
             serviceProvider.setAdmin(admin);
+//            serviceProviderRepository1.save(serviceProvider);
             adminRepository1.save(admin);
 
 
