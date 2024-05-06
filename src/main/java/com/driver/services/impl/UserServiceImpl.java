@@ -57,8 +57,11 @@ public class UserServiceImpl implements UserService {
         user.setServiceProviderList(new ArrayList<>());
 
         // need to get the country
-        Country country = countryRepository3.findByCountryName(countryName);
-        user.setOriginalCountry(country);
+        Country country = new Country();
+        country.setCountryName(countryName1);
+        country.setCode(countryCode);
+//        Country country = countryRepository3.findByCountryName(countryName);
+        user.setOriginalCountry(country);   // Country
         User user1 = userRepository3.save(user);
         // now make originalIp = countryCode+"."+userId
         String originalIp = countryCode + "." + String.valueOf(user1.getId());
