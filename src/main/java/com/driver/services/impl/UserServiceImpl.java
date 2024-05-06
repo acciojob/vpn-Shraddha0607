@@ -55,6 +55,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         user.setConnectionList(new ArrayList<>());
         user.setServiceProviderList(new ArrayList<>());
+        user.setConnected(false);
+        user.setMaskedIp(null);
 
         // need to get the country
         Country country = new Country();
@@ -62,14 +64,11 @@ public class UserServiceImpl implements UserService {
         country.setCode(countryCode);
 //        Country country = countryRepository3.findByCountryName(countryName);
         user.setOriginalCountry(country);   // Country
-        User user1 = userRepository3.save(user);
         // now make originalIp = countryCode+"."+userId
-        String originalIp = countryCode + "." + String.valueOf(user1.getId());
-        user1.setOriginalIp(originalIp);
-        user1.setConnected(false);
-        user1.setOriginalCountry(country);
-//        user1.getMaskedIp(null);
-        userRepository3.save(user1);
+        String originalIp = countryCode + "." + String.valueOf(user.getId());
+        user.setOriginalIp(originalIp);
+
+        userRepository3.save(user);
         return  user;
 
 
