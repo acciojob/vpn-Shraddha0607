@@ -80,13 +80,14 @@ public class UserServiceImpl implements UserService {
         ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
         // create new connection
         Connection connection = new Connection();
-        connection.setUser(user);
-        connection.setServiceProvider(serviceProvider);
+//        connection.setUser(user);
+//        connection.setServiceProvider(serviceProvider);
         connectionRepository3.save(connection);
 
         // make connection
+        user.getConnectionList().add(connection);
         user.getServiceProviderList().add(serviceProvider);
-        serviceProvider.getUsers().add(user);
+        serviceProvider.getConnectionList().add(connection);
         userRepository3.save(user);
         serviceProviderRepository3.save(serviceProvider);
         return  user;
