@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
             Optional<Admin> adminOptional = adminRepository1.findById(adminId);
             Admin admin = adminOptional.get();
             admin.getServiceProviders().add(serviceProvider);
-
+            serviceProvider.setAdmin(admin);
             adminRepository1.save(admin);
 
 
