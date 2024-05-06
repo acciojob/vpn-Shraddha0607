@@ -96,7 +96,7 @@ public class AdminServiceImpl implements AdminService {
             // connect with country
             countryRepository1.save(country);
             serviceProvider.getCountryList().add(country);
-//        serviceProviderRepository1.save(serviceProvider);
+        serviceProviderRepository1.save(serviceProvider);   // save parent
             return  serviceProvider;
     }
 }
