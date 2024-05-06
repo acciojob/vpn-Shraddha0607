@@ -67,6 +67,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         //Else, disconnect from vpn, make masked Ip as null, update relevant attributes and return updated user.
         user.setMaskedIp(null);
         user.setConnected(false);     // disconnect the vpn
+        userRepository2.save(user);
         return user;
     }
     @Override
