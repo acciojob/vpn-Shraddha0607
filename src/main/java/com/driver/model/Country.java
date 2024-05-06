@@ -6,16 +6,18 @@ import javax.persistence.*;
 
 @Entity
 public class Country {
-    private int countryId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private CountryName countryName;
     private String code;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn
     private User user;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn
     private ServiceProvider serviceProvider;
 
@@ -23,29 +25,26 @@ public class Country {
     public Country() {
     }
 
-    public Country(CountryName countryName, String code) {
-        this.countryName = countryName;
-        this.code = code;
-    }
 
-    public Country(int countryId,
+
+    public Country(int id,
                    ServiceProvider serviceProvider,
                    User user,
                    String code,
                    CountryName countryName) {
-        this.countryId = countryId;
+        this.id = id;
         this.serviceProvider = serviceProvider;
         this.user = user;
         this.code = code;
         this.countryName = countryName;
     }
 
-    public int getCountryId() {
-        return countryId;
+    public int getId() {
+        return id;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public CountryName getCountryName() {
