@@ -21,51 +21,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public User connect(int userId, String countryName) throws Exception{
-        User user = userRepository2.findById(userId).get();
-
-        if(user.getMaskedIp() != null){
-            throw new Exception("Already connected");
-        }
-
-        if(countryName.equalsIgnoreCase(user.getOriginalCountry().getCountryName().toString())){
-            return user;
-        }
-
-        if(user.getServiceProviderList() == null) throw new Exception("Unable to connect");
-
-        List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
-        ServiceProvider serviceProviderWithLowestId = null;
-        int lowestId = Integer.MAX_VALUE;
-        Country country = null;
-
-        for(ServiceProvider serviceProvider : serviceProviderList){
-            List<Country> countryList = serviceProvider.getCountryList();
-            for(Country country1 : countryList){
-                if(countryName.equalsIgnoreCase(country1.getCountryName().toString()) && lowestId > serviceProvider.getId()){
-                    lowestId = serviceProvider.getId();
-                    serviceProviderWithLowestId = serviceProvider;
-                    country = country1;
-                }
-            }
-        }
-        if(serviceProviderWithLowestId != null){
-
-            Connection connection = new Connection();
-            connection.setUser(user);
-            connection.setServiceProvider(serviceProviderWithLowestId);
-
-            user.setMaskedIp(country.getCode()+"."+serviceProviderWithLowestId.getId()+"."+userId);
-            user.setConnected(true);
-            user.getConnectionList().add(connection);
-
-            serviceProviderWithLowestId.getConnectionList().add(connection);
-
-            userRepository2.save(user);
-            serviceProviderRepository2.save(serviceProviderWithLowestId);
-        }else{
-            throw new Exception("Unable to connect");
-        }
-
+        User user = new User();
         return  user;
     }
     @Override
