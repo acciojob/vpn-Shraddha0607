@@ -15,7 +15,7 @@ public class Country {
     @JoinColumn
     private User user;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn
     private ServiceProvider serviceProvider;
 
