@@ -34,15 +34,27 @@ public class ConnectionServiceImpl implements ConnectionService {
         //Else, establish the connection where the maskedIp is "updatedCountryCode.serviceProviderId.userId" and return the updated user. If multiple service providers allow you to connect to the country, use the service provider having smallest id.
 
 
-        Country country = user.getOriginalCountry();
-//        if(user.getServiceProviderList()){
-//
-//        }
-//        else{
-//            String maskedIp = country.getCode() + "." + serviceProvider.getId() + "." + user.getId();
-//            user.setMaskedIp(maskedIp);
-//            userRepository2.save(user);
-//        }
+        user.setConnected(true);
+        Country country = null;
+        if(user.getServiceProviderList() == null) throw new Exception("Unable to connect");
+        ServiceProvider serviceProviderToConnect = null;
+        for(ServiceProvider serviceProvider : user.getServiceProviderList()){
+            boolean flagGotServiceProvider = false;
+            for(Country country1 : serviceProvider.getCountryList()){
+                if(country1.getCountryName().toString() == countryName){
+                    country = country1;
+                    serviceProviderToConnect = serviceProvider;
+                    flagGotServiceProvider = true;
+                    break;
+                }
+            }
+            if(flagGotServiceProvider) break;
+        }
+        if(country == null)  throw new Exception("Unable to connect");
+
+        String maskedIp = country.getCode() + "." + serviceProviderToConnect.getId() + "." + user.getId();
+        user.setMaskedIp(maskedIp);
+        userRepository2.save(user);
 
         return  user;
     }
